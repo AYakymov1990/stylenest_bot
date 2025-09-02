@@ -130,16 +130,18 @@ def _human_left(dt_to: datetime) -> str:
 
 @router.message(CommandStart())
 async def cmd_start(msg: Message, command: CommandObject):
-    """Обрабатываем /start и deep-link /start paid. Всегда показываем меню."""
     _ensure_user(msg.from_user.id, msg.from_user.username, msg.from_user.language_code)
 
     payload = (command.args or "").strip()
-    if payload == "paid":
-        await msg.answer("Дякуємо за оплату 🤍 Перевіряю статус…", reply_markup=main_kb())
-        await _send_tariffs_block(msg)
+    # deep-link после возврата из WayForPay
+    if payload in {"thankyou", "paid", "return"}:
+        # НИКАКИХ тарифов здесь — только статус/подтверждение
+        await _send_thankyou_summary(msg)
         return
 
+    # обычный старт — фото + список тарифов
     await _send_tariffs_block(msg)
+
 
 @router.callback_query(F.data.startswith("tariff:"))
 async def show_tariff_details(cb: CallbackQuery):
@@ -216,3 +218,33 @@ async def menu_my_subscription(msg: Message):
         f"Залишилось: <b>{left_str}</b>",
         reply_markup=main_kb()
     )
+
+async def _send_thankyou_summary(msg: Message):
+    # Пытаемся найти активную подписку пользователя
+    with SessionLocal() as db:
+        sub = db.query(Subscription).filter(
+            Subscription.tg_id == msg.from_user.id,
+            Subscription.status == SubscriptionStatus.active
+        ).order_by(Subscription.id.desc()).first()
+
+    if sub:
+        # Заголовок тарифа и дата окончания
+        title = TITLES_UA.get(sub.tariff_code, sub.tariff_code)
+        eur = _eur_price(sub.tariff_code)
+        ends_local = _as_aware_utc(sub.ends_at).astimezone()
+
+        await msg.answer(
+            "Дякую за оплату 🤍\n\n"
+            f"Ваш тариф: «{title} - {eur}€»\n"
+            f"Ваш тариф закінчиться: <b>{ends_local:%d.%m.%Y %H:%M}</b>",
+            reply_markup=main_kb()
+        )
+    else:
+        # На случай, если колбэк ещё не дошёл/не обработан
+        await msg.answer(
+            "Дякую за оплату 🤍\n\n"
+            "Платіж обробляється. Як тільки сервіс підтвердить оплату, "
+            "інвайт та статус зʼявляться в цьому чаті.\n"
+            "Перевірити можна у «🧾 Моя підписка».",
+            reply_markup=main_kb()
+        )

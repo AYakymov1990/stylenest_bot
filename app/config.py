@@ -19,12 +19,12 @@ class Settings(BaseSettings):
 
     # WayForPay
     WFP_MERCHANT_ACCOUNT: str = "t_me_29475"
-    WFP_MERCHANT_DOMAIN: str = "bf229242aea8.ngrok-free.app"
+    WFP_MERCHANT_DOMAIN: str = "a48533a34606.ngrok-free.app"
     WFP_MERCHANT_SECRET: str = "42127b907c979094f8b73214fb9df926e6c593c0"
     WFP_CURRENCY: str = "UAH"
     WFP_API_URL: str = "https://api.wayforpay.com/api"
-    WFP_SERVICE_URL: str = "https://bf229242aea8.ngrok-free.app/wfp/callback"
-    WFP_RETURN_URL: str = "https://t.me/stylenest_club_bot?start=return"          # ← важно, чтобы поле существовало
+    WFP_SERVICE_URL: str = "https://a48533a34606.ngrok-free.app/wfp/callback"
+    WFP_RETURN_URL: str = "https://t.me/stylenest_club_bot?start=thankyou"          # ← важно, чтобы поле существовало
     WFP_FORCE_TEST_AMOUNT: int = 0
 
     # прочее
