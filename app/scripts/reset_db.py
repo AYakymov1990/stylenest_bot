@@ -1,57 +1,52 @@
 # app/scripts/reset_db.py
 from __future__ import annotations
 import argparse
-import pathlib
 import os
-from sqlalchemy import text
-from app.deps import SessionLocal
+import sys
+from urllib.parse import urlparse
+import subprocess
+
 from app.config import settings
-from app.models import User, Payment, Subscription, Base  # Base = declarative_base()
 
-def _detect_sqlite_path() -> pathlib.Path | None:
-    url = getattr(settings, "DATABASE_URL", "sqlite:///./stylenest.db")
-    if url.startswith("sqlite"):
-        # sqlite:///./stylenest.db  or sqlite:///stylenest.db
-        raw = url.split("sqlite:///")[-1]
-        return pathlib.Path(raw).resolve()
-    return None
+def _sqlite_path_from_url(db_url: str) -> str | None:
+    # ожидаем что DATABASE_URL вида sqlite:///absolute/path.db или sqlite:///stylenest.db
+    if not db_url.startswith("sqlite"):
+        return None
+    parsed = urlparse(db_url)
+    # для sqlite:///... parsed.path уже абсолютный/относительный путь
+    return parsed.path or None
 
-def soft_reset() -> None:
-    """Чистим записи в таблицах, схема остаётся."""
-    with SessionLocal() as db:
-        # порядок важен, если есть FK
-        db.query(Payment).delete()        # все платежи
-        db.query(Subscription).delete()   # все подписки
-        db.query(User).delete()           # все пользователи
-        db.commit()
-    print("✅ Soft reset: таблицы очищены.")
+def hard_reset(run_alembic: bool) -> None:
+    db_url = settings.DATABASE_URL
+    db_path = _sqlite_path_from_url(db_url)
+    if not db_path:
+        print(f"❌ Hard reset сейчас поддержан только для sqlite, у тебя: {db_url}")
+        sys.exit(1)
 
-def hard_reset() -> None:
-    """Удаляем файл SQLite и создаём схему заново."""
-    db_path = _detect_sqlite_path()
-    if db_path and db_path.exists():
-        db_path.unlink()
-        print(f"🗑️  Удалён файл БД: {db_path}")
-    else:
-        print("ℹ️  Файл БД не найден, создадим схему заново.")
+    # удаляем файл БД и журналы
+    for p in [db_path, db_path + "-shm", db_path + "-wal"]:
+        try:
+            if os.path.exists(p):
+                os.remove(p)
+                print(f"🗑️  Удалён: {p}")
+        except Exception as e:
+            print(f"⚠️  Не удалось удалить {p}: {e}")
 
-    # пересоздаём схему
-    with SessionLocal() as db:
-        engine = db.get_bind()
-        Base.metadata.create_all(bind=engine)
-    print("✅ Hard reset: схема создана заново.")
+    if run_alembic:
+        # поднимаем схему ТОЛЬКО миграциями
+        print("▶️  alembic upgrade head ...")
+        subprocess.check_call(["alembic", "upgrade", "head"])
 
 def main():
-    parser = argparse.ArgumentParser(description="Reset database")
-    grp = parser.add_mutually_exclusive_group(required=True)
-    grp.add_argument("--soft", action="store_true", help="Очистить таблицы (схему не трогать)")
-    grp.add_argument("--hard", action="store_true", help="Удалить файл SQLite и пересоздать схему")
-    args = parser.parse_args()
+    ap = argparse.ArgumentParser(description="Reset local SQLite DB managed by Alembic")
+    ap.add_argument("--hard", action="store_true", help="Delete SQLite file(s)")
+    ap.add_argument("--upgrade", action="store_true", help="Run `alembic upgrade head` after reset")
+    args = ap.parse_args()
 
     if args.hard:
-        hard_reset()
+        hard_reset(run_alembic=args.upgrade)
     else:
-        soft_reset()
+        print("Use --hard to delete the SQLite DB file. Example: python -m app.scripts.reset_db --hard --upgrade")
 
 if __name__ == "__main__":
     main()

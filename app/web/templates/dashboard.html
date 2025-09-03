@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Stylenest Bot{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-chart-line"></i> Dashboard
+            <small class="text-muted">- Общая статистика бота</small>
+        </h1>
+    </div>
+</div>
+
+<!-- Users Statistics -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3><i class="fas fa-users"></i> Пользователи</h3>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.users.total }}</h4>
+                        <p class="mb-0">Всего пользователей</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.users.with_payments }}</h4>
+                        <p class="mb-0">С оплатой</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-credit-card fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.users.without_payments }}</h4>
+                        <p class="mb-0">Без оплаты</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ stats.users.winback_3d + stats.users.winback_7d + stats.users.winback_30d }}</h4>
+                        <p class="mb-0">Winback отправлено</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-bullhorn fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Winback Statistics -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3><i class="fas fa-bullhorn"></i> Winback-сообщения</h3>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">3 дня</h5>
+                <h3 class="text-primary">{{ stats.users.winback_3d }}</h3>
+                <p class="text-muted">Отправлено напоминаний</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">7 дней</h5>
+                <h3 class="text-warning">{{ stats.users.winback_7d }}</h3>
+                <p class="text-muted">Отправлено напоминаний</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">30 дней</h5>
+                <h3 class="text-danger">{{ stats.users.winback_30d }}</h3>
+                <p class="text-muted">Отправлено напоминаний</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payments Statistics -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3><i class="fas fa-credit-card"></i> Платежи</h3>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Всего платежей</h5>
+                <h3 class="text-primary">{{ stats.payments.total }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Одобрено</h5>
+                <h3 class="text-success">{{ stats.payments.approved }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">В ожидании</h5>
+                <h3 class="text-warning">{{ stats.payments.pending }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Revenue by Tariff -->
+{% if stats.payments.revenue_by_tariff %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h3><i class="fas fa-chart-pie"></i> Доходы по тарифам</h3>
+    </div>
+    {% for tariff in stats.payments.revenue_by_tariff %}
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Тариф {{ tariff.tariff }}</h5>
+                <h3 class="text-success">{{ tariff.amount }} UAH</h3>
+                <p class="text-muted">{{ tariff.count }} платежей</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Subscriptions Statistics -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3><i class="fas fa-calendar-check"></i> Подписки</h3>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Всего подписок</h5>
+                <h3 class="text-primary">{{ stats.subscriptions.total }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Активные</h5>
+                <h3 class="text-success">{{ stats.subscriptions.active }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Истекшие</h5>
+                <h3 class="text-danger">{{ stats.subscriptions.expired }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row">
+    <div class="col-12">
+        <h3><i class="fas fa-bolt"></i> Быстрые действия</h3>
+        <div class="btn-group" role="group">
+            <a href="/users" class="btn btn-outline-primary">
+                <i class="fas fa-users"></i> Просмотр пользователей
+            </a>
+            <a href="/payments" class="btn btn-outline-success">
+                <i class="fas fa-credit-card"></i> Просмотр платежей
+            </a>
+            <a href="/subscriptions" class="btn btn-outline-info">
+                <i class="fas fa-calendar-check"></i> Просмотр подписок
+            </a>
+            <button onclick="location.reload()" class="btn btn-outline-secondary">
+                <i class="fas fa-sync-alt"></i> Обновить
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

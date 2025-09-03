@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Subscriptions - Stylenest Bot{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-calendar-check"></i> Подписки
+            <small class="text-muted">- Последние 100 подписок</small>
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Telegram ID</th>
+                                <th>Тариф</th>
+                                <th>Статус</th>
+                                <th>Начало</th>
+                                <th>Окончание</th>
+                                <th>Reminder 3d</th>
+                                <th>Reminder 1d</th>
+                                <th>Reminder Expired</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sub in subscriptions %}
+                            <tr>
+                                <td>{{ sub.id }}</td>
+                                <td>
+                                    <a href="https://t.me/{{ sub.tg_id }}" target="_blank">
+                                        {{ sub.tg_id }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ sub.tariff_code }}</span>
+                                </td>
+                                <td>
+                                    {% if sub.status == 'active' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check"></i> Активная
+                                        </span>
+                                    {% elif sub.status == 'expired' %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times"></i> Истекшая
+                                        </span>
+                                    {% elif sub.status == 'cancelled' %}
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-ban"></i> Отменена
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ sub.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small>{{ sub.starts_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </td>
+                                <td>
+                                    <small>{{ sub.ends_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                    {% if sub.status == 'active' %}
+                                        <br><span class="badge bg-info">Активная</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if sub.reminded_3d_at %}
+                                        <span class="badge bg-info">
+                                            <i class="fas fa-check"></i> {{ sub.reminded_3d_at.strftime('%m-%d %H:%M') }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Не отправлено</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if sub.reminded_1d_at %}
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-check"></i> {{ sub.reminded_1d_at.strftime('%m-%d %H:%M') }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Не отправлено</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if sub.reminded_expired_at %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-check"></i> {{ sub.reminded_expired_at.strftime('%m-%d %H:%M') }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Не отправлено</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Назад к Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
