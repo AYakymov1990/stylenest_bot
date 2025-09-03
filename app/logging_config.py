@@ -61,4 +61,9 @@ def setup_logging():
     reminders_logger.addHandler(tasks_handler)
     reminders_logger.setLevel(logging.INFO)
     
+    # Логгеры для winback
+    winback_logger = logging.getLogger('app.tasks.winback')
+    winback_logger.addHandler(tasks_handler)
+    winback_logger.setLevel(logging.INFO)
+    
     logging.info("Логирование настроено. Логи сохраняются в папку logs/")

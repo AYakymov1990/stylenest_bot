@@ -10,3 +10,45 @@
 2025-09-03 19:09:21 - app.tasks.expiry - INFO - [EXPIRY] Проверка истекших подписок на 2025-09-03 17:09:21.074273+00:00
 2025-09-03 19:09:21 - app.tasks.expiry - INFO - [EXPIRY] Найдено 0 истекших подписок
 2025-09-03 19:09:21 - app.tasks.expiry - INFO - [EXPIRY] Найдено 0 истекших подписок
+2025-09-03 19:24:42 - app.tasks.winback - INFO - [WINBACK] Проверка winback-сообщений на 2025-09-03 17:24:42.342358+00:00
+2025-09-03 19:24:42 - app.tasks.winback - INFO - [WINBACK] Проверка winback-сообщений на 2025-09-03 17:24:42.342358+00:00
+2025-09-03 19:24:42 - app.tasks.winback - INFO - [WINBACK] Найдено 1 пользователей без оплаты
+2025-09-03 19:24:42 - app.tasks.winback - INFO - [WINBACK] Найдено 1 пользователей без оплаты
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Проверка winback-сообщений на 2025-09-03 17:25:10.412155+00:00
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Проверка winback-сообщений на 2025-09-03 17:25:10.412155+00:00
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 1 пользователей без оплаты
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 1 пользователей без оплаты
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 0 пользователей для winback через 3 дня
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 0 пользователей для winback через 3 дня
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 0 пользователей для winback через 7 дней
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 0 пользователей для winback через 7 дней
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 0 пользователей для winback через 30 дней
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Найдено 0 пользователей для winback через 30 дней
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Обработка winback завершена. Отправлено: 3d - 0, 7d - 0, 30d - 0
+2025-09-03 19:25:10 - app.tasks.winback - INFO - [WINBACK] Обработка winback завершена. Отправлено: 3d - 0, 7d - 0, 30d - 0
+2025-09-03 19:25:18 - app.tasks.worker - INFO - [WORKER] Запуск цикла напоминаний
+2025-09-03 19:25:18 - app.tasks.worker - INFO - [WORKER] Запуск цикла напоминаний
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Проверка напоминаний на 2025-09-03 17:25:18.854045+00:00
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Проверка напоминаний на 2025-09-03 17:25:18.854045+00:00
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 3 дня
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 3 дня
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 1 день
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 1 день
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Обработка напоминаний завершена. Отправлено: за 3 дня - 0, за 1 день - 0
+2025-09-03 19:25:18 - app.tasks.reminders - INFO - [REMINDERS] Обработка напоминаний завершена. Отправлено: за 3 дня - 0, за 1 день - 0
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Проверка напоминаний на 2025-09-03 17:26:18.861445+00:00
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Проверка напоминаний на 2025-09-03 17:26:18.861445+00:00
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 3 дня
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 3 дня
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 1 день
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 1 день
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Обработка напоминаний завершена. Отправлено: за 3 дня - 0, за 1 день - 0
+2025-09-03 19:26:18 - app.tasks.reminders - INFO - [REMINDERS] Обработка напоминаний завершена. Отправлено: за 3 дня - 0, за 1 день - 0
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Проверка напоминаний на 2025-09-03 17:27:18.874891+00:00
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Проверка напоминаний на 2025-09-03 17:27:18.874891+00:00
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 3 дня
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 3 дня
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 1 день
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Найдено 0 подписок для напоминания за 1 день
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Обработка напоминаний завершена. Отправлено: за 3 дня - 0, за 1 день - 0
+2025-09-03 19:27:18 - app.tasks.reminders - INFO - [REMINDERS] Обработка напоминаний завершена. Отправлено: за 3 дня - 0, за 1 день - 0

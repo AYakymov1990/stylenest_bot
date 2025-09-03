@@ -13,6 +13,7 @@ from app.logging_config import setup_logging
 from app.telegram.dispatcher import dp
 from app.tasks.reminders import process_reminders_once
 from app.tasks.expiry import process_expiry_once
+from app.tasks.winback import process_winback_once
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,18 @@ async def expiry_loop(bot: Bot):
     logger.info("[WORKER] Остановка цикла обработки истекших подписок")
 
 
+async def winback_loop(bot: Bot):
+    """Цикл обработки winback-сообщений"""
+    logger.info("[WORKER] Запуск цикла winback-сообщений")
+    while RUN:
+        try:
+            await process_winback_once(bot)
+        except Exception as e:
+            logger.error(f"[WORKER] Ошибка в цикле winback-сообщений: {e}")
+        await asyncio.sleep(CHECK_INTERVAL)
+    logger.info("[WORKER] Остановка цикла winback-сообщений")
+
+
 async def main():
     """Основная функция worker'а"""
     logger.info("[WORKER] Запуск worker'а")
@@ -57,11 +70,12 @@ async def main():
     poller = asyncio.create_task(dp.start_polling(bot))
     rloop = asyncio.create_task(reminders_loop(bot))
     eloop = asyncio.create_task(expiry_loop(bot))
+    wloop = asyncio.create_task(winback_loop(bot))
 
-    logger.info("[WORKER] Все задачи запущены: polling, reminders, expiry")
+    logger.info("[WORKER] Все задачи запущены: polling, reminders, expiry, winback")
     
     try:
-        done, pending = await asyncio.wait({poller, rloop, eloop}, return_when=asyncio.FIRST_EXCEPTION)
+        done, pending = await asyncio.wait({poller, rloop, eloop, wloop}, return_when=asyncio.FIRST_EXCEPTION)
         logger.info("[WORKER] Одна из задач завершилась")
     except Exception as e:
         logger.error(f"[WORKER] Ошибка в main: {e}")

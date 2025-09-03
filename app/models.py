@@ -35,6 +35,11 @@ class User(Base):
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
     )
+    
+    # Winback поля для отслеживания напоминаний пользователям без оплаты
+    winback_3d_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    winback_7d_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    winback_30d_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class Payment(Base):

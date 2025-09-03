@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Payments - Stylenest Bot{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="fas fa-credit-card"></i> Платежи
+            <small class="text-muted">- Последние 100 платежей</small>
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Telegram ID</th>
+                                <th>Тариф</th>
+                                <th>Сумма</th>
+                                <th>Валюта</th>
+                                <th>Статус</th>
+                                <th>Дата создания</th>
+                                <th>Дата одобрения</th>
+                                <th>Order Ref</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.id }}</td>
+                                <td>
+                                    <a href="https://t.me/{{ payment.tg_id }}" target="_blank">
+                                        {{ payment.tg_id }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ payment.tariff_code }}</span>
+                                </td>
+                                <td>
+                                    <strong>{{ payment.amount }} {{ payment.currency }}</strong>
+                                </td>
+                                <td>{{ payment.currency }}</td>
+                                <td>
+                                    {% if payment.status == 'approved' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check"></i> Одобрено
+                                        </span>
+                                    {% elif payment.status == 'pending' %}
+                                        <span class="badge bg-warning">
+                                            <i class="fas fa-clock"></i> В ожидании
+                                        </span>
+                                    {% elif payment.status == 'declined' %}
+                                        <span class="badge bg-danger">
+                                            <i class="fas fa-times"></i> Отклонено
+                                        </span>
+                                    {% elif payment.status == 'expired' %}
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-hourglass-end"></i> Истекло
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ payment.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small>{{ payment.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </td>
+                                <td>
+                                    {% if payment.approved_at %}
+                                        <small>{{ payment.approved_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if payment.order_reference %}
+                                        <code>{{ payment.order_reference[:20] }}{% if payment.order_reference|length > 20 %}...{% endif %}</code>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Назад к Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
